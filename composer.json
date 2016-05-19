@@ -1,0 +1,18 @@
+{
+    "name": "simplesamlphp/simplesamlphp-module-entitycategories",
+    "description": "A SimpleSAMLphp module to define attribute release policies based on entity categories.",
+    "type": "simplesamlphp-module",
+    "keywords": [ "saml2", "SimpleSAMLphp", "saml", "entity categories", "refeds", "research and scholarship", "code of conduct", "CoCo", "R&S" ],
+    "homepage": "http://simplesamlphp.org",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "Jaime Pérez",
+            "email": "jaime.perez@uninett.no"
+        }
+    ],
+    "require": {
+        "simplesamlphp/composer-module-installer": "~1.0"
+    }
+}
+
