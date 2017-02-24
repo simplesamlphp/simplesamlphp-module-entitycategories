@@ -1,8 +1,5 @@
 <?php
 
-namespace SimpleSAML\Module\entitycategories\Auth\Process;
-
-
 /**
  * An authentication processing filter that modifies the list of attributes sent to a service depending on the entity
  * categories it belongs to. This filter DOES NOT alter the list of attributes sent itself, but modifies the list of
@@ -12,7 +9,7 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  * @author Jaime Pérez Crespo, UNINETT AS <jaime.perez@uninett.no>
  * @package SimpleSAMLphp
  */
-class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
+class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Auth_ProcessingFilter
 {
 
     /**
