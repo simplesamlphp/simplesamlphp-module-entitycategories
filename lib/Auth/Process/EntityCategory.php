@@ -28,6 +28,23 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
      */
     protected $default = false;
 
+    /**
+     *
+     * Whether it is allowed to release attributes to entities having unknown entity category based on requested attributes.
+     * Strict means not to release attributes to that entities. If strict is false, attributeLimit will do the filtering.
+     *
+     * @var bool
+     */
+    protected $strict = true;
+
+    /**
+     *
+     * Whether it is allowed to release additional requested attributes than configured in the list of the configuration of the entity category.
+     *
+     * @var bool
+     */
+    protected $allowRequestedAttributes = false;
+
 
     /**
      * EntityCategory constructor.
@@ -48,6 +65,26 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
                     );
                 }
                 $this->default = $value;
+                continue;
+            }
+
+            if ($index === 'strict') {
+                if (!is_bool($value)) {
+                    throw new \SimpleSAML\Error\ConfigurationError(
+                        "The 'strict' configuration option must have a boolean value."
+                    );
+                }
+                $this->strict = $value;
+                continue;
+            }
+
+            if ($index === 'allowRequestedAttributes') {
+                if (!is_bool($value)) {
+                    throw new \SimpleSAML\Error\ConfigurationError(
+                        "The 'allowRequestedAttributes' configuration option must have a boolean value."
+                    );
+                }
+                $this->allowRequestedAttributes = $value;
                 continue;
             }
 
@@ -117,13 +154,13 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
                     continue;
                 }
 
-                if (in_array($attrname, $this->categories[$category])) {
+                if (in_array($attrname, $this->categories[$category]) || $this->allowRequestedAttributes) {
                     $found = true;
                     break;
                 }
             }
 
-            if (!$found) {
+            if (!$found && $this->strict) {
                 // no category (if any) allows the attribute, so remove it
                 unset($request['Destination']['attributes'][$index]);
             }
