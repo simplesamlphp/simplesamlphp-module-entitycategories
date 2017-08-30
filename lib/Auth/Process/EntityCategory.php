@@ -30,16 +30,16 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
 
     /**
      *
-     * Whether it is allowed to release attributes to entities having unknown entity category based on requested attributes.
-     * Strict means not to release attributes to that entities. If strict is false, attributeLimit will do the filtering.
+     * Whether it is allowed to release attributes to entities having no entity category or having unconfigured entity categories
+     * Strict means not to release attributes to that entities. If strict is false, attributeLimit will do the filtering
      *
      * @var bool
      */
-    protected $strict = true;
+    protected $strict = false;
 
     /**
      *
-     * Whether it is allowed to release additional requested attributes than configured in the list of the configuration of the entity category.
+     * Whether it is allowed to release additional requested attributes than configured in the list of the configuration of the entity category and allow release attributes based on requested attributes to entities having unconfigured entity categories.
      *
      * @var bool
      */
@@ -113,12 +113,18 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
     public function process(&$request)
     {
         if (!array_key_exists('EntityAttributes', $request['Destination'])) {
-            // something weird going on, but abort anyway
+            if ($strict) {
+                // We do not allow to release any attribute to entity having no entity attribute
+                $request['Destination']['attributes'] = array();
+            }
             return;
         }
 
         if (!array_key_exists('http://macedir.org/entity-category', $request['Destination']['EntityAttributes'])) {
-            // there's entity attributes, but no entity categories, do nothing
+            if ($strict) {
+                // We do not allow to release any attribute to entity having no entity category
+                $request['Destination']['attributes'] = array();
+            }
             return;
         }
         $categories = $request['Destination']['EntityAttributes']['http://macedir.org/entity-category'];
@@ -160,7 +166,7 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
                 }
             }
 
-            if (!$found && $this->strict) {
+            if (!$found && (!$this->allowRequestedAttributes || $this->strict)) {
                 // no category (if any) allows the attribute, so remove it
                 unset($request['Destination']['attributes'][$index]);
             }
