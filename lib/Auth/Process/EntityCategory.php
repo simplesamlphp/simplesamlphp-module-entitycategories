@@ -113,7 +113,7 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
     public function process(&$request)
     {
         if (!array_key_exists('EntityAttributes', $request['Destination'])) {
-            if ($strict) {
+            if ($this->strict) {
                 // We do not allow to release any attribute to entity having no entity attribute
                 $request['Destination']['attributes'] = array();
             }
@@ -121,7 +121,7 @@ class sspmod_entitycategories_Auth_Process_EntityCategory extends SimpleSAML_Aut
         }
 
         if (!array_key_exists('http://macedir.org/entity-category', $request['Destination']['EntityAttributes'])) {
-            if ($strict) {
+            if ($this->strict) {
                 // We do not allow to release any attribute to entity having no entity category
                 $request['Destination']['attributes'] = array();
             }
