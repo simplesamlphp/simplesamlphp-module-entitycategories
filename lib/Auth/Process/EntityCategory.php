@@ -11,7 +11,7 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  * @author Jaime Pérez Crespo, UNINETT AS <jaime.perez@uninett.no>
  * @package SimpleSAMLphp
  */
-class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
+class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
 {
     /**
      * A list of categories available. An associative array where the identifier of the category is the key, and the
