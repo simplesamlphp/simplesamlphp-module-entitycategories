@@ -19,7 +19,7 @@ class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
      *
      * @var array
      */
-    protected $categories = array();
+    protected $categories = [];
 
     /**
      * Whether the attributes allowed by this category should be sent by default in case no attributes are explicitly
@@ -90,7 +90,7 @@ class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
         if (!array_key_exists('attributes', $request['Destination'])) {
             if ($this->default) {
                 // handle the case of service providers requesting no attributes and the filter being the default policy
-                $request['Destination']['attributes'] = array();
+                $request['Destination']['attributes'] = [];
                 foreach ($categories as $category) {
                     if (!array_key_exists($category, $this->categories)) {
                         continue;
