@@ -2,7 +2,6 @@
 
 namespace SimpleSAML\Module\entitycategories\Auth\Process;
 
-
 /**
  * An authentication processing filter that modifies the list of attributes sent to a service depending on the entity
  * categories it belongs to. This filter DOES NOT alter the list of attributes sent itself, but modifies the list of
@@ -14,7 +13,6 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  */
 class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
 {
-
     /**
      * A list of categories available. An associative array where the identifier of the category is the key, and the
      * associated value is an array with all the attributes allowed for services in that category.
