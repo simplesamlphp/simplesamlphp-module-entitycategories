@@ -2,7 +2,6 @@
 
 namespace SimpleSAML\Module\entitycategories\Auth\Process;
 
-
 /**
  * An authentication processing filter that modifies the list of attributes sent to a service depending on the entity
  * categories it belongs to. This filter DOES NOT alter the list of attributes sent itself, but modifies the list of
@@ -12,16 +11,15 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  * @author Jaime Pérez Crespo, UNINETT AS <jaime.perez@uninett.no>
  * @package SimpleSAMLphp
  */
-class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
+class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
 {
-
     /**
      * A list of categories available. An associative array where the identifier of the category is the key, and the
      * associated value is an array with all the attributes allowed for services in that category.
      *
      * @var array
      */
-    protected $categories = array();
+    protected $categories = [];
 
     /**
      * Whether the attributes allowed by this category should be sent by default in case no attributes are explicitly
@@ -92,7 +90,7 @@ class EntityCategory extends \SimpleSAML_Auth_ProcessingFilter
         if (!array_key_exists('attributes', $request['Destination'])) {
             if ($this->default) {
                 // handle the case of service providers requesting no attributes and the filter being the default policy
-                $request['Destination']['attributes'] = array();
+                $request['Destination']['attributes'] = [];
                 foreach ($categories as $category) {
                     if (!array_key_exists($category, $this->categories)) {
                         continue;
