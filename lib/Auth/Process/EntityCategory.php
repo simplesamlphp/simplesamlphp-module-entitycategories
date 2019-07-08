@@ -29,6 +29,23 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      */
     protected $default = false;
 
+    /**
+     *
+     * Whether it is allowed to release attributes to entities having no entity category or having unconfigured entity categories
+     * Strict means not to release attributes to that entities. If strict is false, attributeLimit will do the filtering
+     *
+     * @var bool
+     */
+    protected $strict = false;
+
+    /**
+     *
+     * Whether it is allowed to release additional requested attributes than configured in the list of the configuration of the entity category and allow release attributes based on requested attributes to entities having unconfigured entity categories.
+     *
+     * @var bool
+     */
+    protected $allowRequestedAttributes = false;
+
 
     /**
      * EntityCategory constructor.
@@ -49,6 +66,26 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
                     );
                 }
                 $this->default = $value;
+                continue;
+            }
+
+            if ($index === 'strict') {
+                if (!is_bool($value)) {
+                    throw new \SimpleSAML\Error\ConfigurationError(
+                        "The 'strict' configuration option must have a boolean value."
+                    );
+                }
+                $this->strict = $value;
+                continue;
+            }
+
+            if ($index === 'allowRequestedAttributes') {
+                if (!is_bool($value)) {
+                    throw new \SimpleSAML\Error\ConfigurationError(
+                        "The 'allowRequestedAttributes' configuration option must have a boolean value."
+                    );
+                }
+                $this->allowRequestedAttributes = $value;
                 continue;
             }
 
@@ -77,12 +114,18 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
     public function process(&$request)
     {
         if (!array_key_exists('EntityAttributes', $request['Destination'])) {
-            // something weird going on, but abort anyway
+            if ($this->strict) {
+                // We do not allow to release any attribute to entity having no entity attribute
+                $request['Destination']['attributes'] = array();
+            }
             return;
         }
 
         if (!array_key_exists('http://macedir.org/entity-category', $request['Destination']['EntityAttributes'])) {
-            // there's entity attributes, but no entity categories, do nothing
+            if ($this->strict) {
+                // We do not allow to release any attribute to entity having no entity category
+                $request['Destination']['attributes'] = array();
+            }
             return;
         }
         $categories = $request['Destination']['EntityAttributes']['http://macedir.org/entity-category'];
@@ -118,13 +161,13 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
                     continue;
                 }
 
-                if (in_array($attrname, $this->categories[$category])) {
+                if (in_array($attrname, $this->categories[$category]) || $this->allowRequestedAttributes) {
                     $found = true;
                     break;
                 }
             }
 
-            if (!$found) {
+            if (!$found && (!$this->allowRequestedAttributes || $this->strict)) {
                 // no category (if any) allows the attribute, so remove it
                 unset($request['Destination']['attributes'][$index]);
             }
