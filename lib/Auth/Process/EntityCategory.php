@@ -161,7 +161,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
                     continue;
                 }
 
-                if (in_array($attrname, $this->categories[$category]) || $this->allowRequestedAttributes) {
+                if (in_array($attrname, $this->categories[$category], true) || $this->allowRequestedAttributes) {
                     $found = true;
                     break;
                 }
