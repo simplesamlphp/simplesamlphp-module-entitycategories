@@ -11,11 +11,22 @@
             "email": "jaime.perez@uninett.no"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "SimpleSAML\\Module\\entitycategories\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimpleSAML\\Test\\Utils\\": "vendor/simplesamlphp/simplesamlphp/tests/Utils"
+        }
+    },
     "require": {
         "simplesamlphp/composer-module-installer": "~1.1"
     },
     "require-dev": {
-        "simplesamlphp/simplesamlphp": "~1.16"
+        "simplesamlphp/simplesamlphp": "~1.16",
+        "simplesamlphp/simplesamlphp-test-framework": "~0.0.10"
     }
 }
 
