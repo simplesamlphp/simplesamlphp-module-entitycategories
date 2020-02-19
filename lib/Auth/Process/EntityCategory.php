@@ -57,7 +57,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      * @param mixed $reserved For future use.
      * @throws \SimpleSAML\Error\ConfigurationError In case of a misconfiguration of the filter.
      */
-    public function __construct($config, $reserved)
+    public function __construct(array $config, $reserved)
     {
         parent::__construct($config, $reserved);
 
@@ -113,8 +113,9 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      * Apply the filter to modify the list of attributes for the current service provider.
      *
      * @param array $request The current request.
+     * @return void
      */
-    public function process(&$request)
+    public function process(array &$request): void
     {
         if (!array_key_exists('EntityAttributes', $request['Destination'])) {
             if ($this->strict) {
