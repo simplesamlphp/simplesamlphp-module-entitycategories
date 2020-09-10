@@ -8,7 +8,6 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  * attributes requested by the service provider. Therefore, in order to be of any use, it must be used together with the
  * core:AttributeLimit authentication processing filter.
  *
- * @author Jaime Pérez Crespo, UNINETT AS <jaime.perez@uninett.no>
  * @package SimpleSAMLphp
  */
 class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
