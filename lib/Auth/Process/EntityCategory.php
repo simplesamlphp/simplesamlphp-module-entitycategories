@@ -112,7 +112,6 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      * Apply the filter to modify the list of attributes for the current service provider.
      *
      * @param array $request The current request.
-     * @return void
      */
     public function process(array &$request): void
     {
