@@ -40,9 +40,9 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
 
     /**
      *
-     * Whether it is allowed to release additional requested attributes than configured in the list of the configuration of
-     * the entity category and allow release attributes based on requested attributes to entities having unconfigured
-     * entity categories.
+     * Whether it is allowed to release additional requested attributes than configured in the list of the
+     * configuration of the entity category and allow release attributes based on requested attributes to entities
+     * having unconfigured entity categories.
      *
      * @var bool
      */
