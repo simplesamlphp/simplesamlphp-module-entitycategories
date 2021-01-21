@@ -1,3 +1,7 @@
+![Build Status](https://github.com/simplesamlphp/simplesamlphp-module-entitycategories/workflows/CI/badge.svg?branch=master)
+[![Coverage Status](https://codecov.io/gh/simplesamlphp/simplesamlphp-module-entitycategories/branch/master/graph/badge.svg)](https://codecov.io/gh/simplesamlphp/simplesamlphp-module-entitycategories)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/simplesamlphp/simplesamlphp-module-entitycategories/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/simplesamlphp/simplesamlphp-module-entitycategories/?branch=master)
+
 Entity Categories
 =================
 
