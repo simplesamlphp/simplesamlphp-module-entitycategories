@@ -18,7 +18,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      *
      * @var array
      */
-    protected $categories = [];
+    protected array $categories = [];
 
     /**
      * Whether the attributes allowed by this category should be sent by default in case no attributes are explicitly
@@ -26,7 +26,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      *
      * @var bool
      */
-    protected $default = false;
+    protected bool $default = false;
 
     /**
      *
@@ -36,7 +36,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      *
      * @var bool
      */
-    protected $strict = false;
+    protected bool $strict = false;
 
     /**
      *
@@ -46,7 +46,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
      *
      * @var bool
      */
-    protected $allowRequestedAttributes = false;
+    protected bool $allowRequestedAttributes = false;
 
 
     /**
