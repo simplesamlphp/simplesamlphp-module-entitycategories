@@ -111,38 +111,38 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
     /**
      * Apply the filter to modify the list of attributes for the current service provider.
      *
-     * @param array $request The current request.
+     * @param array &$state The current request.
      */
-    public function process(array &$request): void
+    public function process(array &$state): void
     {
-        if (!array_key_exists('EntityAttributes', $request['Destination'])) {
+        if (!array_key_exists('EntityAttributes', $state['Destination'])) {
             if ($this->strict) {
                 // We do not allow to release any attribute to entity having no entity attribute
-                $request['Destination']['attributes'] = array();
+                $state['Destination']['attributes'] = array();
             }
             return;
         }
 
-        if (!array_key_exists('http://macedir.org/entity-category', $request['Destination']['EntityAttributes'])) {
+        if (!array_key_exists('http://macedir.org/entity-category', $state['Destination']['EntityAttributes'])) {
             if ($this->strict) {
                 // We do not allow to release any attribute to entity having no entity category
-                $request['Destination']['attributes'] = array();
+                $state['Destination']['attributes'] = array();
             }
             return;
         }
-        $categories = $request['Destination']['EntityAttributes']['http://macedir.org/entity-category'];
+        $categories = $state['Destination']['EntityAttributes']['http://macedir.org/entity-category'];
 
-        if (!array_key_exists('attributes', $request['Destination'])) {
+        if (!array_key_exists('attributes', $state['Destination'])) {
             if ($this->default) {
                 // handle the case of service providers requesting no attributes and the filter being the default policy
-                $request['Destination']['attributes'] = [];
+                $state['Destination']['attributes'] = [];
                 foreach ($categories as $category) {
                     if (!array_key_exists($category, $this->categories)) {
                         continue;
                     }
 
-                    $request['Destination']['attributes'] = array_merge(
-                        $request['Destination']['attributes'],
+                    $state['Destination']['attributes'] = array_merge(
+                        $state['Destination']['attributes'],
                         $this->categories[$category]
                     );
                 }
@@ -151,7 +151,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
         }
 
         // iterate over the requested attributes and see if any of the categories allows them
-        foreach ($request['Destination']['attributes'] as $index => $value) {
+        foreach ($state['Destination']['attributes'] as $index => $value) {
             $attrname = $value;
             if (!is_numeric($index)) {
                 $attrname = $index;
@@ -171,7 +171,7 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
 
             if (!$found && (!$this->allowRequestedAttributes || $this->strict)) {
                 // no category (if any) allows the attribute, so remove it
-                unset($request['Destination']['attributes'][$index]);
+                unset($state['Destination']['attributes'][$index]);
             }
         }
     }
