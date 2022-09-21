@@ -26,6 +26,14 @@ where `dev-master` instructs Composer to install the `master` (**development**) 
 Configuration
 -------------
 
+Next thing you need to do is to enable the module:
+
+in `config.php`, search for the `module.enable` key and set `entitycategories` to true:
+
+```php
+    'module.enable' => [ 'authcrypt' => true, … ],
+```
+
 This module includes an authentication processing filter that can be configured as any other filter. Please read [the documentation](https://simplesamlphp.org/docs/stable/simplesamlphp-authproc) for more general information about authentication processing filters.
 
 You can define your own entity categories, and assign the attributes allowed for each of them. It accepts the following boolean configuration options:
