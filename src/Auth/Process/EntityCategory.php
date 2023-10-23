@@ -2,6 +2,16 @@
 
 namespace SimpleSAML\Module\entitycategories\Auth\Process;
 
+use SimpleSAML\Assert\Assert;
+use SimpleSAML\Auth;
+use SimpleSAML\Error;
+
+use function array_key_exists;
+use function in_array;
+use function is_array;
+use function is_bool;
+use function is_numeric;
+
 /**
  * An authentication processing filter that modifies the list of attributes sent to a service depending on the entity
  * categories it belongs to. This filter DOES NOT alter the list of attributes sent itself, but modifies the list of
@@ -10,7 +20,7 @@ namespace SimpleSAML\Module\entitycategories\Auth\Process;
  *
  * @package SimpleSAMLphp
  */
-class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
+class EntityCategory extends Auth\ProcessingFilter
 {
     /**
      * A list of categories available. An associative array where the identifier of the category is the key, and the
@@ -62,46 +72,46 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
 
         foreach ($config as $index => $value) {
             if ($index === 'default') {
-                if (!is_bool($value)) {
-                    throw new \SimpleSAML\Error\ConfigurationError(
-                        "The 'default' configuration option must have a boolean value."
-                    );
-                }
+                Assert::boolean(
+                    $value,
+                    "The 'default' configuration option must have a boolean value.",
+                    Error\ConfigurationError::class,
+                );
                 $this->default = $value;
                 continue;
             }
 
             if ($index === 'strict') {
-                if (!is_bool($value)) {
-                    throw new \SimpleSAML\Error\ConfigurationError(
-                        "The 'strict' configuration option must have a boolean value."
-                    );
-                }
+                Assert::boolean(
+                    $value,
+                    "The 'strict' configuration option must have a boolean value.",
+                    Error\ConfigurationError::class,
+                );
                 $this->strict = $value;
                 continue;
             }
 
             if ($index === 'allowRequestedAttributes') {
-                if (!is_bool($value)) {
-                    throw new \SimpleSAML\Error\ConfigurationError(
-                        "The 'allowRequestedAttributes' configuration option must have a boolean value."
-                    );
-                }
+                Assert::boolean(
+                    $value,
+                    "The 'allowRequestedAttributes' configuration option must have a boolean value.",
+                    Error\ConfigurationError::class,
+                );
                 $this->allowRequestedAttributes = $value;
                 continue;
             }
 
-            if (is_numeric($index)) {
-                throw new \SimpleSAML\Error\ConfigurationError(
-                    "Unspecified allowed attributes for the '$value' category."
-                );
-            }
+            Assert::numeric(
+                $index,
+                "Unspecified allowed attributes for the '$value' category.",
+                Error\ConfigurationError::class,
+            );
 
-            if (!is_array($value)) {
-                throw new \SimpleSAML\Error\ConfigurationError(
-                    "The list of allowed attributes for category '$index' is not an array."
-                );
-            }
+            Assert::isArray(
+                $value,
+                "The list of allowed attributes for category '$index' is not an array.",
+                Error\ConfigurationError::class,
+            );
 
             $this->categories[$index] = $value;
         }
@@ -116,24 +126,24 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
     public function process(array &$state): void
     {
         if (!array_key_exists('EntityAttributes', $state['Destination'])) {
-            if ($this->strict) {
+            if ($this->strict === true) {
                 // We do not allow to release any attribute to entity having no entity attribute
-                $state['Destination']['attributes'] = array();
+                $state['Destination']['attributes'] = [];
             }
             return;
         }
 
         if (!array_key_exists('http://macedir.org/entity-category', $state['Destination']['EntityAttributes'])) {
-            if ($this->strict) {
+            if ($this->strict === true) {
                 // We do not allow to release any attribute to entity having no entity category
-                $state['Destination']['attributes'] = array();
+                $state['Destination']['attributes'] = [];
             }
             return;
         }
         $categories = $state['Destination']['EntityAttributes']['http://macedir.org/entity-category'];
 
         if (!array_key_exists('attributes', $state['Destination'])) {
-            if ($this->default) {
+            if ($this->default === true) {
                 // handle the case of service providers requesting no attributes and the filter being the default policy
                 $state['Destination']['attributes'] = [];
                 foreach ($categories as $category) {
@@ -163,13 +173,13 @@ class EntityCategory extends \SimpleSAML\Auth\ProcessingFilter
                     continue;
                 }
 
-                if (in_array($attrname, $this->categories[$category], true) || $this->allowRequestedAttributes) {
+                if (in_array($attrname, $this->categories[$category], true) || $this->allowRequestedAttributes === true) {
                     $found = true;
                     break;
                 }
             }
 
-            if (!$found && (!$this->allowRequestedAttributes || $this->strict)) {
+            if ($found === false && ($this->allowRequestedAttributes === false || $this->strict === true)) {
                 // no category (if any) allows the attribute, so remove it
                 unset($state['Destination']['attributes'][$index]);
             }
