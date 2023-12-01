@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SimpleSAML\Module\entitycategories\Auth\Process;
 
 use SimpleSAML\Assert\Assert;
@@ -173,7 +175,10 @@ class EntityCategory extends Auth\ProcessingFilter
                     continue;
                 }
 
-                if (in_array($attrname, $this->categories[$category], true) || $this->allowRequestedAttributes === true) {
+                if (
+                    in_array($attrname, $this->categories[$category], true)
+                    || $this->allowRequestedAttributes === true
+                ) {
                     $found = true;
                     break;
                 }
