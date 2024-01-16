@@ -9,9 +9,8 @@ use SimpleSAML\Auth;
 use SimpleSAML\Error;
 
 use function array_key_exists;
+use function array_merge;
 use function in_array;
-use function is_array;
-use function is_bool;
 use function is_numeric;
 
 /**
