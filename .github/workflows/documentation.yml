@@ -1,3 +1,5 @@
+---
+
 name: Documentation
 
 on:
@@ -19,13 +21,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Lint markdown files
-        uses: nosborn/github-action-markdown-cli@v3.1.0
+        uses: nosborn/github-action-markdown-cli@v3
         with:
           files: .
           ignore_path: .markdownlintignore
 
       - name: Perform spell check
-        uses: codespell-project/actions-codespell@master
+        uses: codespell-project/actions-codespell@v2
         with:
           path: '**/*.md'
           check_filenames: true
