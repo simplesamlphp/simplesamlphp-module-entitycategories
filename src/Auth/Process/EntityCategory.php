@@ -154,7 +154,7 @@ class EntityCategory extends Auth\ProcessingFilter
 
                     $state['Destination']['attributes'] = array_merge(
                         $state['Destination']['attributes'],
-                        $this->categories[$category]
+                        $this->categories[$category],
                     );
                 }
             }
