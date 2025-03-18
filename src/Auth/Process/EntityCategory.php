@@ -102,7 +102,7 @@ class EntityCategory extends Auth\ProcessingFilter
                 continue;
             }
 
-            Assert::numeric(
+            Assert::notNumeric(
                 $index,
                 "Unspecified allowed attributes for the '$value' category.",
                 Error\ConfigurationError::class,
