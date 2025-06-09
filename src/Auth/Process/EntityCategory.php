@@ -104,7 +104,7 @@ class EntityCategory extends Auth\ProcessingFilter
 
             Assert::string(
                 $index,
-                "Unspecified allowed attributes for the '$value' category.",
+                "Identifier of a category must be a string. '$index' is set.",
                 Error\ConfigurationError::class,
             );
 
