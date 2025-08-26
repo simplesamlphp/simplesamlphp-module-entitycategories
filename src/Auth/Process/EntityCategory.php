@@ -27,7 +27,7 @@ class EntityCategory extends Auth\ProcessingFilter
      * A list of categories available. An associative array where the identifier of the category is the key, and the
      * associated value is an array with all the attributes allowed for services in that category.
      *
-     * @var array
+     * @var array<string, array<string>>
      */
     protected array $categories = [];
 
@@ -63,7 +63,7 @@ class EntityCategory extends Auth\ProcessingFilter
     /**
      * EntityCategory constructor.
      *
-     * @param array $config An array with the configuration for this processing filter.
+     * @param array<mixed> $config An array with the configuration for this processing filter.
      * @param mixed $reserved For future use.
      * @throws \SimpleSAML\Error\ConfigurationError In case of a misconfiguration of the filter.
      */
@@ -122,7 +122,7 @@ class EntityCategory extends Auth\ProcessingFilter
     /**
      * Apply the filter to modify the list of attributes for the current service provider.
      *
-     * @param array &$state The current request.
+     * @param array<mixed> &$state The current request.
      */
     public function process(array &$state): void
     {
